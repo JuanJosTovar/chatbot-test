@@ -1,124 +1,345 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+This project implements a NestJS API that communicates with an AI chatbot powered by the OpenAI Chat Completions API.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+The chatbot can dynamically use two tools:
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- `searchProducts()` – Searches products from a local CSV catalog.
+- `convertCurrencies()` – Converts money between currencies using current exchange rates from the Open Exchange Rates API.
 
-## Description
+The LLM decides which tool should be used depending on the customer's request. It can also use multiple tools sequentially when necessary.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
+# Technologies
 
-```bash
-$ npm install
-```
+The project was developed using:
 
-## Compile and run the project
+Node.js
+TypeScript
+NestJS
+OpenAI Node SDK
+OpenAI Chat Completions API
+OpenAI Function Calling / Tools
+Open Exchange Rates API
+csv-parse
+class-validator
+class-transformer
+Swagger / OpenAPI
+Git
 
-```bash
-# development
-$ npm run start
+# Requirements
 
-# watch mode
-$ npm run start:dev
+Before running the project, make sure you have installed:
 
-# production mode
-$ npm run start:prod
-```
+Node.js 20 or higher - installed by the command: npm install -g @nestjs/cli
 
-## Run tests
+npm
+Git
 
-```bash
-# unit tests
-$ npm run test
+You can verify the installed versions with:
+node -v
+npm -v
+nest --version
+git --version
 
-# e2e tests
-$ npm run test:e2e
+# Installation
 
-# test coverage
-$ npm run test:cov
-```
+Clone the repository:
 
-## Deployment
+git clone <repository-url>
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Enter the project directory:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+cd wizybot-technical-test
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+Install all project dependencies that already in the package.json:
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+npm install
 
-## Observability
+Main dependencies used by the project include:
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+@nestjs/common
+@nestjs/core
+@nestjs/config
+@nestjs/swagger
+openai
+class-validator
+class-transformer
+csv-parse
+swagger-ui-express
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+# Environment Variables
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+The project uses environment variables to store API credentials and configuration.
 
-To add it to this project:
+Create a .env file in the project root.
 
-```bash
-$ npm install @nestjs/observe
-```
+You can use .env.example as reference.
 
-Then follow the [setup guide](https://docs.nestjs.com/observability/overview) - it takes a single import and an app key.
+PORT=3000
 
-The free plan needs no payment details and covers 300,000 events a month. You can also browse the [live demo](https://www.observe-demo.nestjs.com/dashboard) first - the whole dashboard over a busy service's data, with nothing to install.
+OPENAI_API_KEY=openai_api_key
+OPENAI_MODEL=gpt-5.6-luna
 
-## Resources
+OPEN_EXCHANGE_RATES_APP_ID=open_exchange_rates_app_id
 
-Check out a few resources that may come in handy when working with NestJS:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observe](https://observe.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# Environment variable description
+PORT
 
-## Support
+Port where the NestJS application runs.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Default: 3000
 
-## Stay in touch
+# OPENAI_API_KEY
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Secret API key used to communicate with the OpenAI API.
 
-## License
+# OPENAI_MODEL
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+OpenAI model used by the chatbot.
+
+Current configuration: gpt-5.6-luna
+
+# OPEN_EXCHANGE_RATES_APP_ID
+
+Application ID used to authenticate requests to the Open Exchange Rates API.
+
+# Security
+
+The .env file contains private credentials and must never be committed to GitHub.
+
+The repository contains .env.example only as a configuration reference.
+
+The .gitignore file excludes environment files such as:
+
+.env
+.env.local
+.env.*.local
+
+# Running the Application
+
+Start the application in development mode: npm run start:dev
+
+NestJS runs by default at: http://localhost:3000
+
+# API Documentation
+
+Swagger documentation is available at: http://localhost:3000/docs
+
+Swagger can be used to inspect and test the API directly from the browser.
+
+# Chatbot Endpoint
+POST /chatbot
+
+Sends a customer enquiry to the AI chatbot.
+
+URL
+POST http://localhost:3000/chatbot
+Request Body
+{
+  "message": "I am looking for a phone"
+}
+
+The message field:
+
+Must be a string.
+Cannot be empty.
+
+Example:
+
+{
+  "message": "How many Canadian Dollars are 350 Euros?"
+}
+Example Response
+350 euros are approximately 561.43 Canadian dollars (CAD).
+
+The exact answer may vary because the final response is generated by the LLM.
+
+Request Example with cURL
+
+# Chatbot Workflow
+
+The chatbot uses OpenAI Chat Completions with Function Calling.
+
+The basic workflow is:
+
+1. The API receives the user's enquiry.
+
+2. The enquiry and the available tools are sent to the LLM.
+
+3. The LLM decides whether a tool is required.
+
+4. NestJS executes the requested tool.
+
+5. The tool result is sent back to the LLM.
+
+6. The LLM may:
+   - Generate the final answer.
+   - Request another tool.
+
+7. The final natural-language response is returned to the user.
+
+The chatbot supports multiple consecutive tool calls when a request requires information from more than one source.
+
+A maximum number of tool iterations is used to prevent infinite tool-calling loops.
+
+# Product Search Tool
+
+The searchProducts() tool searches the product catalog stored at:
+
+data/products_list.csv
+
+The CSV contains fields such as:
+
+displayTitle
+embeddingText
+url
+imageUrl
+productType
+discount
+price
+variants
+createDate
+
+The search service analyzes fields including:
+
+Product title
+Product type
+Product description / embedding text
+
+The search algorithm:
+
+Normalizes the search text.
+Removes differences caused by uppercase/lowercase characters and accents.
+Expands some search terms using related keywords and synonyms.
+Calculates a relevance score for each product.
+Orders products by relevance.
+Returns a maximum of two products.
+
+For example:
+
+searchProducts("phone")
+
+may return:
+
+iPhone 12
+iPhone 13
+
+The LLM is also instructed to transform broad intentions into useful catalog search terms.
+
+For example:
+
+"I am looking for a present for my dad"
+
+can be interpreted by the LLM as a search for suitable product categories instead of searching the literal words "present for my dad".
+
+Currency Conversion Tool
+
+The convertCurrencies() tool converts an amount from one currency to another.
+
+It retrieves current currency exchange rates from:
+
+Open Exchange Rates API
+
+The API returns rates using USD as the base currency.
+
+The conversion formula used is:
+
+(amount / sourceCurrencyRate) * targetCurrencyRate
+
+Example:
+
+350 EUR → CAD
+
+The service:
+
+Retrieves the latest exchange rates.
+Finds the EUR exchange rate.
+Finds the CAD exchange rate.
+Converts the original amount.
+Rounds the result to two decimal places.
+Returns the value to the LLM.
+
+The LLM then generates the final natural-language response.
+
+# Multi-Tool Requests
+
+Some customer enquiries require more than one tool.
+
+The tool workflow continues until the LLM produces a final response or the maximum number of tool iterations is reached.
+
+Validation
+
+The API uses:
+
+class-validator
+class-transformer
+
+The request DTO validates that the incoming message:
+
+is a string
+is not empty
+
+NestJS global validation is enabled using ValidationPipe.
+
+# Product Search Manual Test
+
+The product search service can be tested independently using:
+
+npx ts-node scripts/product-test.ts
+
+This allows the CSV search algorithm to be tested without invoking OpenAI.
+
+# Currency Conversion Manual Test
+
+The currency service can be tested independently using:
+
+npx ts-node scripts/currency-test.ts
+
+This verifies communication with Open Exchange Rates without involving the LLM.
+
+# API Services Used
+OpenAI
+
+Used for:
+
+Natural-language understanding.
+Tool selection.
+Function calling.
+Multi-tool workflows.
+Final response generation.
+
+The implementation uses the OpenAI Chat Completions API as required by the technical assessment.
+
+The project does not use the OpenAI Agents API.
+
+# Open Exchange Rates
+
+Used to retrieve current currency exchange rates for the convertCurrencies() tool.
+
+# Final Project Setup
+
+After cloning the repository, the minimum commands required to run the project are:
+
+npm install
+
+Create and configure:
+
+.env
+
+Then run:
+
+npm run start:dev
+
+The API will be available at:
+
+http://localhost:3000
+
+Swagger documentation will be available at:
+
+http://localhost:3000/docs
+
+# Author
+
+Technical Assessment – Fullstack Developer Position
+
+Built with NestJS, TypeScript, OpenAI Chat Completions, Function Calling, and Open Exchange Rates.
