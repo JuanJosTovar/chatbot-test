@@ -1,8 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config'
+import { OpenAI } from 'openai'
 
 @Injectable()
 export class ChatbotService {
+    
+    private readonly openai: OpenAI;
+
+    constructor(private readonly configService: ConfigService){
+        this.openai = new OpenAI({
+            apiKey: this.configService.get<string>('OPENAI_API_KEY'),
+        });
+    }
+
   async chat(userMessage: string): Promise<string> {
-    return `You said: ${userMessage}`;
+    const response = await this.openai.chat.completions.create({
+        model: this.configService.get<string>('OPENAI_MODEL')!,
+        messages: [
+            {
+                role:'user',
+                content: userMessage,
+            },
+        ],
+    });
+
+    return response.choices[0].message.content ?? '';
   }
 }
