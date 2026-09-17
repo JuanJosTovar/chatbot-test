@@ -12,6 +12,12 @@ export class ProductSearchService {
     this.products = this.loadProducts();
   }
 
+  private containsWord(text: string, term: string): boolean {
+  const words = text.split(/\W+/);
+
+  return words.includes(term);
+}
+
   private loadProducts(): Product[] {
     const filePath = join(
       process.cwd(),
@@ -30,9 +36,10 @@ export class ProductSearchService {
   }
 
   public searchProducts(query: string): Product[] {
-    const searchTerms = this.normalizeText(query)
+    const originalTerms = this.normalizeText(query)
       .split(' ')
       .filter((term) => term.length > 2);
+      const searchTerms = this.expandSearchTerms(originalTerms);
 
     const scoredProducts = this.products.map((product) => {
       const title = this.normalizeText(product.displayTitle);
@@ -42,15 +49,15 @@ export class ProductSearchService {
       let score = 0;
 
       for (const term of searchTerms) {
-        if (title.includes(term)) {
+        if (this.containsWord(title, term)) {
           score += 5;
         }
 
-        if (productType.includes(term)) {
+        if (this.containsWord(productType, term)) {
           score += 3;
         }
 
-        if (description.includes(term)) {
+        if (this.containsWord(description, term)) {
           score += 2;
         }
       }
@@ -74,4 +81,14 @@ export class ProductSearchService {
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
   }
+
+  private expandSearchTerms(terms: string[]): string[] {
+  const synonyms: Record<string, string[]> = {
+    phone: ['phone', 'iphone', 'smartphone', 'cellular', 'celulares'],
+    watch: ['watch', 'smartwatch'],
+    headphones: ['headphones', 'earbuds', 'headset'],
+  };
+
+  return terms.flatMap((term) => synonyms[term] ?? [term]);
+}
 }
