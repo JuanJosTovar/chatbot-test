@@ -27,7 +27,9 @@ export class ChatbotService {
             'Use searchProducts when the user wants to find products, ask about products, or needs a product price. ' +
             'Use convertCurrencies when the user wants to convert money between currencies. ' +
             'If the user asks for a product price in another currency, first use searchProducts to get the real product price and then use convertCurrencies. ' +
-            'Never invent product information, prices, or exchange rates. Use the available tools.',
+            'Never invent product information, prices, or exchange rates. Use the available tools. ' +
+            'When using searchProducts, provide concise product or category keywords that are likely to exist in the catalog. ' +
+            'If the user gives a broad intention such as looking for a gift, infer reasonable product types instead of searching the literal sentence.' 
         },
         {
         role: 'user',
@@ -57,7 +59,7 @@ export class ChatbotService {
                     query: {
                     type: 'string',
                     description:
-                        'The product or type of product the customer is looking for.',
+                        'A concise product search query. Convert broad customer intentions into concrete product or category keywords. For example, if the customer wants a gift for their dad, use relevant product keywords such as watch, headphones, or technology instead of the words "gift for dad".',
                     },
                 },
                 required: ['query'],
