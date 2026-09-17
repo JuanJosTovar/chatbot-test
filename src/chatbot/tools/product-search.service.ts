@@ -84,8 +84,50 @@ export class ProductSearchService {
 
   private expandSearchTerms(terms: string[]): string[] {
   const synonyms: Record<string, string[]> = {
-    phone: ['phone', 'iphone', 'smartphone', 'cellular', 'celulares'],
-    watch: ['watch', 'smartwatch'],
+    phone: [
+      'phone',
+      'phones',
+      'iphone',
+      'smartphone',
+      'smartphones',
+      'cellphone',
+      'cellphones',
+      'cellular',
+      'celulares',
+      'mobile',
+    ],
+    phones: [
+      'phone',
+      'phones',
+      'iphone',
+      'smartphone',
+      'smartphones',
+      'cellphone',
+      'cellphones',
+      'cellular',
+      'celulares',
+      'mobile',
+    ],
+    smartphone: [
+      'phone',
+      'phones',
+      'iphone',
+      'smartphone',
+      'smartphones',
+      'cellular',
+      'celulares',
+    ],
+    smartphones: [
+      'phone',
+      'phones',
+      'iphone',
+      'smartphone',
+      'smartphones',
+      'cellular',
+      'celulares',
+    ],
+    watch: ['watch', 'watches', 'smartwatch'],
+    watches: ['watch', 'watches', 'smartwatch'],
     headphones: ['headphones', 'earbuds', 'headset'],
   };
 
